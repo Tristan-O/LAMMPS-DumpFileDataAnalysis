@@ -175,12 +175,12 @@ def distances_from_dump(infile, style='beadspring', POLY_END_TYPE = 1, POLY_MID_
 				dist = np.linalg.norm(r0_ij)
 				# if dist <= min(L)/2.:
 				dists.append(dist)
-return dists
+	return dists
 
-def save_data(infiles, r0, k ,id1, id2, outfile, beta=1):
+def save_data(infiles, r0, k ,id1, id2, outfile, beta=1, correl_time = 50):
 	allDist2D = {}
 	for i,f in enumerate(infiles):
-	  dists = sim.distances_from_dump(f, style='id', id1=id1, id2=id2)
+	  dists = distances_from_dump(f, style='id', id1=id1, id2=id2)
 	  #remove tails from distance data
 	  freq = 20
 	  c,b = np.histogram(dists,100)
@@ -208,11 +208,10 @@ def save_data(infiles, r0, k ,id1, id2, outfile, beta=1):
 	  r0.append(key[1])
 	  k.append(key[0])
 
-	correl_times = 52*[50]
 
 	temp = []
 	for i,_ in enumerate(r0):
-	  temp.append( list(allDist2D[(k[i],r0[i])])[0::int(correl_times[i])] )
+	  temp.append( list(allDist2D[(k[i],r0[i])])[0::int(correl_time)] )
 	allDist2D = np.array(temp)
 
 
